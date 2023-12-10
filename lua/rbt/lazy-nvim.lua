@@ -14,12 +14,12 @@ vim.opt.rtp:prepend(lazypath)
 
 
 require("lazy").setup({
-	{
-		'rose-pine/neovim',
-		lazy = false,
-		priority = 1000,
-		name = 'rose-pine',
-	},
+  {
+    'rose-pine/neovim',
+    lazy = false,
+    priority = 1000,
+    name = 'rose-pine',
+  },
   -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
@@ -41,11 +41,33 @@ require("lazy").setup({
     },
   },
   {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
   },
   'nvim-treesitter/playground',
   'theprimeagen/harpoon',
   'mbbill/undotree',
   'tpope/vim-fugitive',
+
+  -- -- LSP zero --
+  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+  -- LSP support
+  'neovim/nvim-lspconfig',
+  'williamboman/mason.nvim',
+  'williamboman/mason-lspconfig.nvim',
+  -- Autocompletion
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'saadparwaiz1/cmp_luasnip',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-nvim-lua',
+  -- Snippets
+  'L3MON4D3/LuaSnip',
+  'rafamadriz/friendly-snippets',
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+  },
+  'sbdchd/neoformat',
 }, {})

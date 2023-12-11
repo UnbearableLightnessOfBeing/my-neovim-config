@@ -14,13 +14,19 @@ vim.opt.rtp:prepend(lazypath)
 
 
 require("lazy").setup({
+ -- {
+ --   'rose-pine/neovim',
+ --   lazy = false,
+ --   priority = 1000,
+ --   name = 'rose-pine',
+ -- },
+  -- Fuzzy Finder (files, lsp, etc)
   {
-    'rose-pine/neovim',
+    'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
-    name = 'rose-pine',
+    opts = {},
   },
-  -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',

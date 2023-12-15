@@ -76,4 +76,9 @@ require("lazy").setup({
     dependencies = 'nvim-tree/nvim-web-devicons',
   },
   'sbdchd/neoformat',
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    opts = {}
+  },
 }, {})

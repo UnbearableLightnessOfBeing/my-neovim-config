@@ -44,3 +44,10 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+-- test remap
+vim.keymap.set("n", "<leader>fj", function ()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  print(cursor[1])
+  return ''
+end)

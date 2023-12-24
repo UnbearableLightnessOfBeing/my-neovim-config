@@ -69,3 +69,30 @@ ls.add_snippets('vue', {
 }, {
   type = 'autosnippets',
 })
+
+-- vue3 base snippet with setup and ts (script rirst)
+ls.add_snippets('vue', {
+  s(
+  {
+    trig = 'vue-3-ts-setup',
+  },
+  fmt(
+  [[
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <div></div>
+</template>
+
+<style scoped lang="{}">
+
+</style>
+      ]],
+      { i(1) }
+    )
+  ),
+}, {
+  type = 'autosnippets',
+})

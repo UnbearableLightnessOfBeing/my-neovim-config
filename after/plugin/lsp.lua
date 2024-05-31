@@ -17,7 +17,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'rust_analyzer', 'eslint', 'lua_ls', 'volar', 'cssls', 'html', 'gopls', 'tailwindcss' },
+  ensure_installed = { 'tsserver', 'rust_analyzer', 'eslint', 'lua_ls', 'volar@1.8.5', 'cssls', 'html', 'htmx', 'gopls', 'tailwindcss' },
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
@@ -29,10 +29,11 @@ require('mason-lspconfig').setup({
 
 -- volar version 2.x.x
 -- local mason_registry = require('mason-registry')
--- local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
-local lspconfig = require('lspconfig')
-
+-- local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/typescript-plugin'
+-- local lspconfig = require('lspconfig')
+-- 
 -- lspconfig.tsserver.setup {
+--   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 --   init_options = {
 --     plugings = {
 --       {
@@ -42,17 +43,17 @@ local lspconfig = require('lspconfig')
 --       },
 --     },
 --   },
---   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 -- }
 
-lspconfig.volar.setup {
-  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-  init_options = {
-    vue = {
-      hybridMode = false,
-    },
-  },
-}
+-- disable hybrid mode
+-- require('lspconfig').volar.setup {
+--   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+--   init_options = {
+--     vue = {
+--       hybridMode = false,
+--     },
+--   },
+-- }
 
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }

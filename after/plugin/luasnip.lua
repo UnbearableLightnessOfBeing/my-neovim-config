@@ -115,7 +115,7 @@ ls.add_snippets('vue', {
   type = 'autosnippets',
 })
 
--- vue3 base snippet with setup and ts (script rirst)
+-- vue3 base snippet with setup and ts (script first)
 ls.add_snippets('vue', {
   s(
   {
@@ -146,12 +146,12 @@ ls.add_snippets('vue', {
 -- ls.add_snippets('go', {
 --   s(
 --   {
---     trig = 'errsnip',
+--     trig = 'goerr',
 --   },
 --   fmt(
 --   [[
 -- if err != nil {
---   return err
+--   log.Fatal(err)
 -- }
 --   ]],
 --       {}

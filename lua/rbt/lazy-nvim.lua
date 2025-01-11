@@ -1,4 +1,3 @@
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -14,12 +13,12 @@ vim.opt.rtp:prepend(lazypath)
 
 
 require("lazy").setup({
- -- {
- --   'rose-pine/neovim',
- --   lazy = false,
- --   priority = 1000,
- --   name = 'rose-pine',
- -- },
+  -- {
+  --   'rose-pine/neovim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   name = 'rose-pine',
+  -- },
   -- Fuzzy Finder (files, lsp, etc)
   {
     'folke/tokyonight.nvim',
@@ -56,7 +55,7 @@ require("lazy").setup({
   'tpope/vim-fugitive',
 
   -- -- LSP zero --
-  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+  { 'VonHeikemen/lsp-zero.nvim', branch = 'v4.x' },
   -- LSP support
   'neovim/nvim-lspconfig',
   'williamboman/mason.nvim',
@@ -80,5 +79,8 @@ require("lazy").setup({
     'windwp/nvim-autopairs',
     event = "InsertEnter",
     opts = {}
+  },
+  {
+    'codota/tabnine-nvim', build = "./dl_binaries.sh"
   },
 }, {})

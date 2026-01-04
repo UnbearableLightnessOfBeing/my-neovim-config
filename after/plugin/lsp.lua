@@ -17,7 +17,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'rust_analyzer', 'eslint', 'lua_ls', 'volar@1.8.5', 'cssls', 'html', 'htmx', 'gopls', 'tailwindcss' },
+  ensure_installed = { 'rust_analyzer', 'lua_ls', 'html', 'gopls', 'helm_ls' },
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
@@ -27,11 +27,29 @@ require('mason-lspconfig').setup({
   }
 })
 
+local gopls_settings = {
+  settings = {
+    gopls = {
+      usePlaceholders = true,
+      buildFlags = {
+        '-tags=integration,wireinject'
+      }
+    }
+  }
+}
+
+-- if Neovim version is larger than 0.11 gopls needs to be setup like this
+if vim.version().minor >= 11 then
+  vim.lsp.config('gopls', gopls_settings)
+else
+  require('lspconfig').gopls.setup(gopls_settings)
+end
+
 -- volar version 2.x.x
 -- local mason_registry = require('mason-registry')
 -- local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/typescript-plugin'
 -- local lspconfig = require('lspconfig')
--- 
+--
 -- lspconfig.tsserver.setup {
 --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
 --   init_options = {

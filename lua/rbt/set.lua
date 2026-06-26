@@ -22,6 +22,8 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
+vim.opt.winborder = "bold"
+
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
@@ -32,6 +34,7 @@ vim.opt.colorcolumn = "80"
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#5f1a1a", ctermbg = "DarkRed" })
+    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#7aa2f7" })
   end,
 })
 

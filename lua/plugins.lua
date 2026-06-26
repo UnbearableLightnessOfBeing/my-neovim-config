@@ -32,10 +32,9 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     build = ":TSUpdate",
   },
-  'nvim-treesitter/playground',
 
   'mbbill/undotree',
 
@@ -44,11 +43,9 @@ return {
   'tpope/vim-fugitive',
   'tpope/vim-commentary',
 
-  { 'VonHeikemen/lsp-zero.nvim', branch = 'v4.x' },
-
   'neovim/nvim-lspconfig',
-  'williamboman/mason.nvim',
-  'williamboman/mason-lspconfig.nvim',
+  'mason-org/mason.nvim',
+  'mason-org/mason-lspconfig.nvim',
 
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-buffer',

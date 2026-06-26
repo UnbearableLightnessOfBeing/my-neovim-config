@@ -1,87 +1,56 @@
-local lsp_zero = require('lsp-zero')
+-- Capabilities for all servers (nvim-cmp integration)
+vim.lsp.config('*', {
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+})
 
-lsp_zero.on_attach(function(client, bufnr)
-  local opts = { buffer = bufnr, remap = false }
+-- Buffer-local LSP keymaps on attach (replaces lsp_zero.on_attach)
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local opts = { buffer = ev.buf, remap = false }
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+    vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+  end,
+})
 
-  vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-  vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-  vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-  vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-  vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-  vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-  vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-  vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-end)
+-- Per-server overrides (merged over nvim-lspconfig's lsp/<name>.lua defaults)
+vim.lsp.config('gopls', {
+  settings = { gopls = { buildFlags = { '-tags=integration,wireinject' } } },
+})
+
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      diagnostics = { globals = { 'vim' } },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+    },
+  },
+})
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = { 'rust_analyzer', 'lua_ls', 'html', 'gopls', 'helm_ls' },
-  handlers = {
-    lsp_zero.default_setup,
-    lua_ls = function()
-      local lua_opts = lsp_zero.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
-    end,
-  }
+  automatic_enable = true, -- replaces handlers/default_setup; calls vim.lsp.enable
 })
 
-local gopls_settings = {
-  settings = {
-    gopls = {
-      buildFlags = {
-        '-tags=integration,wireinject'
-      }
-    }
-  }
-}
-
--- if Neovim version is larger than 0.11 gopls needs to be setup like this
-if vim.version().minor >= 11 then
-  vim.lsp.config('gopls', gopls_settings)
-else
-  require('lspconfig').gopls.setup(gopls_settings)
-end
-
--- volar version 2.x.x
--- local mason_registry = require('mason-registry')
--- local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/typescript-plugin'
--- local lspconfig = require('lspconfig')
---
--- lspconfig.tsserver.setup {
---   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
---   init_options = {
---     plugings = {
---       {
---         name = '@vue/typescript-plugin',
---         location = vue_language_server_path,
---         languages = { 'vue' },
---       },
---     },
---   },
--- }
-
--- disable hybrid mode
--- require('lspconfig').volar.setup {
---   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
---   init_options = {
---     vue = {
---       hybridMode = false,
---     },
---   },
--- }
-
+-- nvim-cmp (lsp-zero no longer wires the snippet engine / capabilities)
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
 cmp.setup({
+  snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
   sources = {
     { name = 'path' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lua' },
+    { name = 'luasnip' },
   },
-  formatting = lsp_zero.cmp_format(),
   mapping = cmp.mapping.preset.insert({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
@@ -91,53 +60,21 @@ cmp.setup({
 })
 
 vim.diagnostic.config({
-  virtual_text = {
-    source = true
-  },
-  float = {
-    source = true
-  }
+  virtual_text = { source = true },
+  float = { source = true },
 })
 
---vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---  vim.lsp.diagnostic.on_publish_diagnostics, {
---    -- Enable underline, use default values
---    underline = true,
---    -- Enable virtual text, override spacing to 4
---    virtual_text = {
---      spacing = 4,
---    },
---    -- Use a function to dynamically turn signs off
---    -- and on, using buffer local variables
---    signs = function(namespace, bufnr)
---      return vim.b[bufnr].show_signs == true
---    end,
---    -- Disable a feature
---    update_in_insert = false,
---  }
---)
-
+-- brief: custom filetype + LSP (already modern; keep as-is)
 vim.lsp.config("briefls", {
   cmd = { "briefls" },
   filetypes = { "brief" },
   root_markers = { ".git" },
   single_file_support = true,
-  flags = {
-    debounce_text_changes = 150,
-  },
+  flags = { debounce_text_changes = 150 },
   capabilities = {
-    workspace = {
-      didChangeWatchedFiles = {
-        dynamicRegistration = true,
-      },
-    },
+    workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
   },
 })
+vim.lsp.enable("briefls")
 
-vim.lsp.enable "briefls"
-
-vim.filetype.add {
-  extension = {
-    brief = "brief",
-  },
-}
+vim.filetype.add { extension = { brief = "brief" } }

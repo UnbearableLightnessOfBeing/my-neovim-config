@@ -29,5 +29,10 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#5f1a1a", ctermbg = "DarkRed" })
+  end,
+})
 
 vim.g.mapleader = " "

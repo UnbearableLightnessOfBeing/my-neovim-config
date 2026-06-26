@@ -30,7 +30,6 @@ require('mason-lspconfig').setup({
 local gopls_settings = {
   settings = {
     gopls = {
-      usePlaceholders = true,
       buildFlags = {
         '-tags=integration,wireinject'
       }
@@ -117,3 +116,28 @@ vim.diagnostic.config({
 --    update_in_insert = false,
 --  }
 --)
+
+vim.lsp.config("briefls", {
+  cmd = { "briefls" },
+  filetypes = { "brief" },
+  root_markers = { ".git" },
+  single_file_support = true,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  capabilities = {
+    workspace = {
+      didChangeWatchedFiles = {
+        dynamicRegistration = true,
+      },
+    },
+  },
+})
+
+vim.lsp.enable "briefls"
+
+vim.filetype.add {
+  extension = {
+    brief = "brief",
+  },
+}

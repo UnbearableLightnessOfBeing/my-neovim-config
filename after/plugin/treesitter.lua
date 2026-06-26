@@ -1,6 +1,6 @@
 require 'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "go", "rust", "python", "vue", "css", "scss", "html", "bash", "markdown", "vimdoc", "yaml" },
+  ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "go", "rust", "python", "vue", "css", "scss", "html", "bash", "markdown", "vimdoc", "yaml", "brief" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -39,3 +39,14 @@ require 'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.brief = {
+  install_info = {
+    url = "ssh://git@stash.msk.avito.ru:7999/~ddfomin/tree-sitter-brief.git", -- local path or git repo
+    files = { "src/parser.c" },
+  },
+  filetype = "brief",
+}
+
+vim.treesitter.language.register("brief", "brief") -- use parser "brief" (second argument) for "brief" (first argument) filetype

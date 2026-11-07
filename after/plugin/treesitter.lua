@@ -2,8 +2,8 @@ require('nvim-treesitter').setup()
 
 local ensure = {
   "c", "lua", "vim", "javascript", "typescript", "go", "rust", "python", "sql", "json",
-  "vue", "css", "scss", "html", "bash", "markdown", "vimdoc", "yaml", "toml", "brief",
-  "gitcommit", "gitignore",
+  "vue", "css", "scss", "html", "bash", "markdown", "vimdoc", "yaml", "toml",
+  "gitcommit", "gitignore", "make", "git_config", "git_rebase", "dockerfile",
 }
 
 -- Custom 'brief' parser (Avito-internal). Registered before install runs.

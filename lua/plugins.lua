@@ -38,7 +38,11 @@ return {
 
   'mbbill/undotree',
 
-  'theprimeagen/harpoon',
+  {
+    'theprimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
 
   'tpope/vim-fugitive',
   'tpope/vim-commentary',
